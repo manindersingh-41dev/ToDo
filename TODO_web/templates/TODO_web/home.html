@@ -1,0 +1,111 @@
+{% extends 'TODO_web/main.html' %}
+
+{% block content %}
+
+<style>
+    body{
+        background-color: rgb(29, 28, 28);
+    }
+
+    .card-reformat{
+        margin:15px; 
+        background-color: rgb(112, 112, 112);
+        border-radius: 20px;
+    }
+
+    .text-color { 
+        color: rgb(28, 28, 28)
+    }
+
+    .text-field{
+        background-color: transparent;
+        width: 100%;
+    }
+
+    textarea {
+      overflow-y: hidden;
+    }
+    .save_btn {
+        
+        background-color: transparent;
+        border: 12px;
+        border-color: black;
+        color: white !important;
+    }
+
+    .btn-position
+    {
+        position:relative;
+        float: right;   
+    }
+    
+    .task-val-btn{
+        position:relative;
+        float:inline-end; 
+        margin-right: 5px;
+    }
+
+    
+
+
+</style>
+
+
+
+{% for taskID, taskVal in store_edit_field.items %}
+    <div class="card border-dark card-reformat">     
+        <div class="card-body">
+        
+            <p class="card-text text-color">
+                <form action="{% url 'updateTask' taskID %}", method="POST">
+                    {% csrf_token %}
+
+                    {{taskVal.consumer.as_hidden}}
+                    {{taskVal.task}}
+
+                
+                    <input class="btn btn-outline-success task-val-btn" type="submit" value="Update">
+                </form>
+                
+                <form action="{% url 'deleteTask' taskID %}", method="POST">
+                    {% csrf_token %}
+                    <input class="btn btn-outline-danger task-val-btn" type="submit" value="Delete">
+                    
+                </form>
+                
+                    
+                    
+                
+            </p>
+        </div>
+    </div>
+{% endfor %}
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="card border-dark card-reformat">
+        
+        <div class="card-body">
+            {{task_field.consumer.as_hidden}}
+            {{task_field.task}}
+            <input class="btn btn-outline-dark btn-position" type="submit" value="Save">
+        </div>
+    </div>
+</form>
+
+
+<script>
+
+
+    function SetNewSize(textArea) {
+        if (event.key === "Enter" || event.key == "Backspace"){
+            textArea.style.height = "0px";
+            textArea.style.height = textArea.scrollHeight + "px";
+        }
+    }
+
+</script>
+
+{% endblock %}
+
